@@ -32,6 +32,7 @@ var controlling = false
 
 func _ready():
 	state = move
+	randomize()
 	all_pieces = make_2d_array()
 	spawn_pieces()
 
@@ -44,7 +45,7 @@ func make_2d_array():
 	return array
 
 func spawn_pieces():
-	randomize()
+	#randomize()
 	for i in width:
 		for j in height:
 			var rand = floor(rand_range(0, possible_pieces.size()))
@@ -55,8 +56,7 @@ func spawn_pieces():
 				loops += 1
 				piece = possible_pieces[rand].instance()#Instance that piece from the array
 			add_child(piece)
-			piece.position = grid_to_pixel(i, j - y_offset)
-			piece.move(grid_to_pixel(i, j))
+			piece.position = grid_to_pixel(i, j)
 			all_pieces[i][j] = piece
 
 func match_at(i, j, color):
@@ -200,7 +200,7 @@ func after_refill():
 				if match_at(i, j, all_pieces[i][j].color):
 					find_matches()
 					get_parent().get_node("destroy_timer").start()
-					return
+					break
 	state = move
 	print ("after refill")
 
